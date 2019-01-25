@@ -2,24 +2,24 @@
 # version 0.2
 
 # declaring package requirements
-libraries = c("EBImage", "plyr", "ggplot2")
+libraries = c("EBImage", "ggplot2")
 
 # loading packages 
 invisible(lapply(libraries, function(x){library(x, character.only = T)}))
 
 # getting parameters
-args=commandArgs(trailingOnly = T)
 args=c("100", "0.8", "0.5")
+#args=commandArgs(trailingOnly = T)
 
 # area of colony must be at least area px
 area = 100
-area = args[1]
+#area = args[1]
 # circularity must be greater equal than circ
 circ = 0.8
-circ = args[2]
+#circ = args[2]
 # eccentricity must be lesser than eccen
 eccen = 0.5
-eccen = args[3]
+#eccen = args[3]
 
 # defining alternative display function
 display2 = function(x){ display(x, method="raster") }

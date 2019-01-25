@@ -7,7 +7,7 @@ This software was conceived to find spontaneous mutants of _Halobacterium salina
 ## Requirements
 
 * Cropped Plates
-* A few R packages: EBImage (BioConductor), dplyr (CRAN) and ggplot2 (CRAN). 
+* A few R packages: EBImage (BioConductor) and ggplot2 (CRAN). 
 
 You have to install the R packages before running the script. Some of them might rely on external libraries. It's the case of Fast Fourier Transforms required by EBImage (it installs fftwtools which relies on libfftw3-dev on Ubuntu), so you gotta make everything work first.  
 
