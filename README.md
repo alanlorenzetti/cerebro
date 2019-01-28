@@ -12,7 +12,7 @@ The software will also write in the user defined resultsDir three additional fil
 * __generalAndMutCounts.txt__: A tab-separated table with the amount of valid colonies (sum of normal colonies and mutant colonies) and mutant colonies.
 * __colony_redIntensity_scatter.svg__: This chart shows a scatter plot of two variables computed for each valid colony of an entire experiment. x-axis shows the mean red intensity and y-axis shows the standard deviation of red intensity. The decision boundary is given by the a percentile approach, were mutants are the 1% having the higher mean red intensity and the 1% having the lower standard deviation of red intensity.
 
-![Decision Boundaries Example](/examples/colony_redIntensity_scatter.svg)
+![Decision Boundary Example](/examples/colony_redIntensity_scatter.png)
 
 ## Usage
 
