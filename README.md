@@ -12,7 +12,9 @@ The software will also write in the user defined resultsDir three additional fil
 * __generalAndMutCounts.txt__: A tab-separated table with the amount of valid colonies (sum of normal colonies and mutant colonies) and mutant colonies.
 * __colony_redIntensity_scatter.svg__: This chart shows a scatter plot of two variables computed for each valid colony of an entire experiment. x-axis shows the mean red intensity and y-axis shows the standard deviation of red intensity. The decision boundary is given by a percentile approach, were mutants are the 1% having the higher mean red intensity and the 1% having the lower standard deviation of red intensity.
 
-<img align="center" src="/examples/colony_redIntensity_scatter.png">
+<p align="center">
+<img src="/examples/colony_redIntensity_scatter.png">
+</p>
 
 ## Usage
 
@@ -51,7 +53,9 @@ Rscript cerebro.R images processedImages results 100 0.8 0.5
 
 * A directory with the set of photographies to be analyzed (imageInputDir). A big set of images is recommended. Images must have ".tif" extension and manual pre-processing to remove borders and artifacts is recommended. See example of image below and note that there are two classes of colonies: i. the darker ones (normal colonies); and ii. the lighter ones (mutants).
 
+<p align="center">
 <img align="center" src="/examples/raw/.raw_image.png">
+</p>
 
 ## Software Name
 
