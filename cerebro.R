@@ -14,7 +14,7 @@ args=commandArgs(trailingOnly=T)
 # control input
 helpMessage="Please, check README.md file for instructions.\n\nUsage:\nRscript cerebro.R <imageInputDir> <imageOutputDir> <resultsDir> <area> <circularity> <eccentricity>\n\nExample:\nRscript cerebro.R images processedImages results 100 0.8 0.5\n\nCerebro: Spontaneous Mutant Finder\nhttps://github.com/alanlorenzetti/cerebro\n\n"
 if(args[1] == "--help" | args[1] == "-help" | args[1] == "-h"){stop(helpMessage)}
-if(length(args != 6)){stop("You must provide all the six arguments with the correct order. Please, check README.md for more information.")}
+if(length(args) != 6){stop("You must provide all the six arguments with the correct order. Please, check README.md for more information.")}
 
 ## setting variables
 # input dir
