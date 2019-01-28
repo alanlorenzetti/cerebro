@@ -1,5 +1,5 @@
-# alorenzetti 20190125
-# version 0.2
+# alorenzetti 20190128
+# version 0.3
 
 # declaring package requirements
 libraries = c("EBImage", "ggplot2")
@@ -10,6 +10,11 @@ invisible(lapply(libraries, function(x){library(x, character.only = T)}))
 # getting parameters
 #args=c("images", "processedImages", "results", "100", "0.8", "0.5")
 args=commandArgs(trailingOnly=T)
+
+# control input
+helpMessage="Please, check README.md file for instructions.\n\nUsage:\nRscript cerebro.R <imageInputDir> <imageOutputDir> <resultsDir> <area> <circularity> <eccentricity>\n\nExample:\nRscript cerebro.R images processedImages results 100 0.8 0.5\n\nCerebro: Spontaneous Mutant Finder\nhttps://github.com/alanlorenzetti/cerebro\n\n"
+if(args[1] == "--help" | args[1] == "-help" | args[1] == "-h"){stop(helpMessage)}
+if(length(args != 6)){stop("You must provide all the six arguments in order")}
 
 ## setting variables
 # input dir
@@ -120,7 +125,7 @@ workflow = function(imgIN = imgIN, dir = dir, intensityThr = intensityThr, inten
   prefix = sub("^.*/", "", prefix)
   
   # echoing progress
-  print(paste0("Processing", prefix))  
+  print(paste("Processing", prefix))  
 
   # reading img
   imgOriginal = readImage(imgIN)
