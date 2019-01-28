@@ -2,15 +2,15 @@
 
 This software was conceived to find and count spontaneous mutants of _Halobacterium salinarum_ NRC-1 when grown on solid media. For that, it will used pre-processed photographies of plated colonies and apply a pattern recognition approach to define which of them are mutants.  
   
-On the image below you will see an example. The left photography shows the pre-processed image (input), and the right one shows the image after being processed. The program circulated all valid colonies (satisfying parameters), giving the green color for normal ones and red color for mutants. Images like this will be put in the user defined imageOutputDir.
+On the image below you will see an example. The left photography shows the pre-processed image (input), and the right one shows the image after being processed. The program circled all valid colonies (satisfying parameters), giving the green color for normal ones and red color for mutants. Processed images will be put in the user defined imageOutputDir.
 
 <img align="center" src="/examples/processed/.processed_image.png">
 
 The software will also write in the user defined resultsDir three additional files:
 
 * __features.txt__: A tab-separated table with all the segmented colonies of each image (each spot named colony_#), alongside with each of the features computed by EBImage::computeFeatures.shape, EBImage::computeFeatures.basic and EBImage::computeFeatures.moment.
-* __generalAndMutCounts.txt__: A tab-separated table with the amount of valid colonies (sum of normal colonies and mutant colonies) and mutant colonies.
-* __colony_redIntensity_scatter.svg__: This chart shows a scatter plot of two variables computed for each valid colony of an entire experiment. x-axis shows the mean red intensity and y-axis shows the standard deviation of red intensity. The decision boundary is given by a percentile approach, were mutants are the 1% having the higher mean red intensity and the 1% having the lower standard deviation of red intensity.
+* __generalAndMutCounts.txt__: A tab-separated table with the amount of valid colonies and mutant colonies, where the number of valid colonies is the sum of normal colonies and mutant colonies.
+* __colony_redIntensity_scatter.svg__: This chart shows a scatter plot of two variables computed for each valid colony of an entire experiment. x-axis shows the mean red intensity and y-axis shows the standard deviation of red intensity. The decision boundary is given by an oversimplified approach based on percentiles, were mutants are the 1% having the higher mean red intensity and the 1% having the lower standard deviation of red intensity.
 
 <p align="center">
 <img src="/examples/colony_redIntensity_scatter.png">
@@ -51,7 +51,7 @@ Rscript cerebro.R images processedImages results 100 0.8 0.5
 
 * R packages: __EBImage (BioConductor)__ and __ggplot2 (CRAN)__. You have to install the R packages before running the script. Some of them might rely on external libraries. It's the case of Fast Fourier Transforms required by EBImage (it installs fftwtools which relies on libfftw3-dev on Ubuntu), so you gotta make everything work first.  
 
-* A directory with the set of photographies to be analyzed (imageInputDir). A big set of images is recommended. Images must have ".tif" extension and manual pre-processing to remove borders and artifacts is recommended. See example of image below and note that there are two classes of colonies: i. the darker ones (normal colonies); and ii. the lighter ones (mutants).
+* A directory with the set of photographies to be analyzed (imageInputDir). A big set of images is recommended. Images must have ".tif" extension and manual pre-processing to remove borders and artifacts is recommended. See example of image below and note that there are two classes of colonies: _i_. the darker ones (normal colonies); and _ii_. the lighter ones (mutants).
 
 <p align="center">
 <img align="center" src="/examples/raw/.raw_image.png">
