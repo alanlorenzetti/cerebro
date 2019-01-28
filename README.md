@@ -37,7 +37,7 @@ Rscript cerebro.R images processedImages results 100 0.8 0.5
 
 * A directory with the set of photographies to be analyzed (imageInputDir). See example of image below:
 
-![Raw Image](./examples/raw/raw_image.tif)
+<img src="./examples/raw/raw_image.tif" width="500">
 
 * R packages: EBImage (BioConductor) and ggplot2 (CRAN). 
 
