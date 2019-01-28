@@ -1,7 +1,8 @@
 # Cerebro: Spontaneous Mutant Finder
 
-This software was conceived to find and count spontaneous mutants of _Halobacterium salinarum_ NRC-1 when grown on solid media. For that, it will used pre-processed photographies of plated colonies and apply a pattern recognition approach to define which of are mutants.  
-On the image below you will see an example. The left photography is the pre-processed image (input), and the right one is the image after being processed. Note the program circulated all valid colonies (satisfying parameters), giving the green color for normal ones and red color for mutants.  
+This software was conceived to find and count spontaneous mutants of _Halobacterium salinarum_ NRC-1 when grown on solid media. For that, it will used pre-processed photographies of plated colonies and apply a pattern recognition approach to define which of them are mutants.  
+  
+On the image below you will see an example. The left photography shows the pre-processed image (input), and the right one shows the image after being processed. The program circulated all valid colonies (satisfying parameters), giving the green color for normal ones and red color for mutants.  
 
 ![Processed Image Example](/examples/processed/.processed_image.png)
 
@@ -38,7 +39,7 @@ Rscript cerebro.R images processedImages results 100 0.8 0.5
 
 ## Requirements
 
-* R packages: EBImage (BioConductor) and ggplot2 (CRAN). You have to install the R packages before running the script. Some of them might rely on external libraries. It's the case of Fast Fourier Transforms required by EBImage (it installs fftwtools which relies on libfftw3-dev on Ubuntu), so you gotta make everything work first.  
+* R packages: __EBImage (BioConductor)__ and __ggplot2 (CRAN)__. You have to install the R packages before running the script. Some of them might rely on external libraries. It's the case of Fast Fourier Transforms required by EBImage (it installs fftwtools which relies on libfftw3-dev on Ubuntu), so you gotta make everything work first.  
 
 * A directory with the set of photographies to be analyzed (imageInputDir). A big set of images is recommended Images must have ".tif" extension. See example of image below and note that there are two classes of colonies: i. the darker ones (normal colonies); and ii. the lighter ones (mutants).
 
