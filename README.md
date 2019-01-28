@@ -41,7 +41,7 @@ Rscript cerebro.R images processedImages results 100 0.8 0.5
 
 * R packages: __EBImage (BioConductor)__ and __ggplot2 (CRAN)__. You have to install the R packages before running the script. Some of them might rely on external libraries. It's the case of Fast Fourier Transforms required by EBImage (it installs fftwtools which relies on libfftw3-dev on Ubuntu), so you gotta make everything work first.  
 
-* A directory with the set of photographies to be analyzed (imageInputDir). A big set of images is recommended Images must have ".tif" extension. See example of image below and note that there are two classes of colonies: i. the darker ones (normal colonies); and ii. the lighter ones (mutants).
+* A directory with the set of photographies to be analyzed (imageInputDir). A big set of images is recommended. Images must have ".tif" extension and manual pre-processing to remove borders and artifacts is recommended. See example of image below and note that there are two classes of colonies: i. the darker ones (normal colonies); and ii. the lighter ones (mutants).
 
 ![Raw Image Example](examples/raw/.raw_image.png)
 
