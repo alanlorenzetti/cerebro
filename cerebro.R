@@ -244,10 +244,8 @@ print("Done!")
 # making a copy of results
 df = results
 
-# adjusting ouput matrix
+# adjusting output matrix
 results = data.frame(plateID = sub("^.*/(.*)\\..*$", "\\1", as.character(results[,3])),
-                     strain = sub("^.*/(.*?)_.*$", "\\1", as.character(results[,3])),
-                     replicate = sub("^.*/.*_(.*_.*).tif", "\\1", as.character(results[,3])),
                      counts = as.numeric(results[,1]),
                      mutcounts = as.numeric(results[,2]),
                      row.names=NULL)

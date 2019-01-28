@@ -2,9 +2,17 @@
 
 This software was conceived to find and count spontaneous mutants of _Halobacterium salinarum_ NRC-1 when grown on solid media. For that, it will used pre-processed photographies of plated colonies and apply a pattern recognition approach to define which of them are mutants.  
   
-On the image below you will see an example. The left photography shows the pre-processed image (input), and the right one shows the image after being processed. The program circulated all valid colonies (satisfying parameters), giving the green color for normal ones and red color for mutants.  
+On the image below you will see an example. The left photography shows the pre-processed image (input), and the right one shows the image after being processed. The program circulated all valid colonies (satisfying parameters), giving the green color for normal ones and red color for mutants. Images like this will be put in the user defined imageOutputDir.
 
 ![Processed Image Example](/examples/processed/.processed_image.png)
+
+The software will also write in the user defined resultsDir three additional files:
+
+* __features.txt__: A tab-separated table with all the segmented colonies of each image (each spot named colony_#), alongside with each of the features computed by EBImage::computeFeatures.shape, EBImage::computeFeatures.basic and EBImage::computeFeatures.moment.
+* __generalAndMutCounts.txt__: A tab-separated table with the amount of valid colonies (sum of normal colonies and mutant colonies) and mutant colonies.
+* __colony_redIntensity_scatter.svg__: This chart shows a scatter plot of two variables computed for each valid colony of an entire experiment. x-axis shows the mean red intensity and y-axis shows the standard deviation of red intensity. The decision boundary is given by the a percentile approach, were mutants are the 1% having the higher mean red intensity and the 1% having the lower standard deviation of red intensity.
+
+![Decision Boundaries Example](/examples/colony_redIntensity_scatter.svg)
 
 ## Usage
 
