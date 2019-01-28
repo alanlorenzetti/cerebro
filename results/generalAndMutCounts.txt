@@ -1,0 +1,10 @@
+plateID	strain	replicate	counts	mutcounts
+dLSm_B10_2nd	dLSm	B10_2nd	561	3
+dLSm_B6_2nd	dLSm	B6_2nd	762	4
+dLSm_B8_2nd	dLSm	B8_2nd	435	1
+dLSm_B9_2nd	dLSm	B9_2nd	353	1
+dUra3_A10_2nd	dUra3	A10_2nd	350	10
+dUra3_A1_2nd	dUra3	A1_2nd	96	0
+dUra3_A2_2nd	dUra3	A2_2nd	470	11
+dUra3_B1_1st	dUra3	B1_1st	678	11
+dUra3_B1_2nd	dUra3	B1_2nd	148	2

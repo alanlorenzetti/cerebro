@@ -8,24 +8,42 @@ libraries = c("EBImage", "ggplot2")
 invisible(lapply(libraries, function(x){library(x, character.only = T)}))
 
 # getting parameters
-args=c("100", "0.8", "0.5")
-#args=commandArgs(trailingOnly = T)
+#args=c("images", "processedImages", "results", "100", "0.8", "0.5")
+args=commandArgs(trailingOnly=T)
+
+## setting variables
+# input dir
+inputDir=args[1]
+
+# processed image dir
+imgOutputDir=args[2]
+
+# results dir
+resultsDir=args[3]
 
 # area of colony must be at least area px
-area = 100
-#area = args[1]
+area = as.numeric(args[4])
+
 # circularity must be greater equal than circ
-circ = 0.8
-#circ = args[2]
+circ = as.numeric(args[5])
+
 # eccentricity must be lesser than eccen
-eccen = 0.5
-#eccen = args[3]
+eccen = as.numeric(args[6])
+
+# creating output directories
+if(!dir.exists(imgOutputDir)){
+  dir.create(imgOutputDir)
+}else{stop(paste(imgOutputDir, "directory already exists. Aborting."))}
+
+if(!dir.exists(resultsDir)){
+  dir.create(resultsDir)
+}else{stop(paste(resultsDir, "directory already exists. Aborting."))}
 
 # defining alternative display function
 display2 = function(x){ display(x, method="raster") }
 
 # getting list of files
-files = list.files("croppedPlates", "*.tif", full.names = T)
+files = list.files(inputDir, "*.tif", full.names = T)
 
 # defining function to get features for every plate and then compute parameters
 getFeatureTable = function(imgIN = imgIN){
@@ -80,14 +98,14 @@ getFeatureTable = function(imgIN = imgIN){
   fts = computeFeatures.shape(imgSeg)
   fts2 = computeFeatures.basic(imgSeg, ref = imgRed)
   fts3 = computeFeatures.moment(imgSeg, ref = imgGray)
-  circularity = fts[,"s.area"] / fts[,"s.perimeter"]^2 *4*pi
+  circularity = (fts[,"s.area"] / fts[,"s.perimeter"]^2)*4*pi
   
   # creating a new dataframe with features
   features = as.data.frame(cbind(fts, fts2, fts3, circularity), stringsAsFactors = F)
   features$plate = rep(prefix, dim(features)[1])
   
   # filtering features by area, circularity and eccentricity
-  filter = features[,"s.area"] > area & features[,"circularity"] >= circ & features[,"m.eccentricity"] < eccen
+  filter = features[,"s.area"] >= area & features[,"circularity"] >= circ & features[,"m.eccentricity"] < eccen
   featuresBad = rownames(features[!filter,])
   features = features[filter,]
   features$ID = paste0("colony_", 1:dim(features)[1])
@@ -101,6 +119,9 @@ workflow = function(imgIN = imgIN, dir = dir, intensityThr = intensityThr, inten
   prefix = sub(".tif$", "", imgIN)
   prefix = sub("^.*/", "", prefix)
   
+  # echoing progress
+  print(paste0("Processing", prefix))  
+
   # reading img
   imgOriginal = readImage(imgIN)
   
@@ -148,14 +169,14 @@ workflow = function(imgIN = imgIN, dir = dir, intensityThr = intensityThr, inten
   fts = computeFeatures.shape(imgSeg)
   fts2 = computeFeatures.basic(imgSeg, ref = imgRed)
   fts3 = computeFeatures.moment(imgSeg, ref = imgGray)
-  circularity = fts[,"s.area"] / fts[,"s.perimeter"]^2 *4*pi
+  circularity = (fts[,"s.area"] / fts[,"s.perimeter"]^2)*4*pi
   
   # creating a new dataframe with features
   features = as.data.frame(cbind(fts, fts2, fts3, circularity), stringsAsFactors = F)
   features$plate = rep(prefix, dim(features)[1])
   
   # filtering features by area, circularity and eccentricity
-  filter = features[,"s.area"] > area & features[,"circularity"] >= circ & features[,"m.eccentricity"] < eccen
+  filter = features[,"s.area"] >= area & features[,"circularity"] >= circ & features[,"m.eccentricity"] < eccen
   featuresBad = rownames(features[!filter,])
   features = features[filter,]
   features$ID = paste0("colony_", 1:dim(features)[1])
@@ -196,12 +217,14 @@ workflow = function(imgIN = imgIN, dir = dir, intensityThr = intensityThr, inten
 }
 
 # running function to get parameters to classify mutants
+print("Computing Parameters for Classification...")
 featureTable = NULL
 for(i in files){
   featureTable = rbind(featureTable, getFeatureTable(i))
 }
+print("Done!")
 
-write.table(featureTable, "features.txt", sep="\t", col.names=T, row.names=F, quote=F)
+write.table(featureTable, paste0(resultsDir, "/", "features.txt"), sep="\t", col.names=T, row.names=F, quote=F)
 intensityThr = quantile(featureTable$b.mean, probs = 0.99)
 intensitySdThr = quantile(featureTable$b.sd, probs = 0.01)
 mutantIndex = featureTable$b.mean >= intensityThr & featureTable$b.sd <= intensitySdThr
@@ -211,15 +234,12 @@ featureTable$class[!mutantIndex] = "Normal"
 
 # running analysis to classify mutants and
 # write images
-if(!dir.exists("resultsR")){
-  dir.create("resultsR")
-  
-  results = NULL
-  for(i in files){
-    line = workflow(i, "resultsR", intensityThr, intensitySdThr)
+results = NULL
+for(i in files){
+    line = workflow(i, imgOutputDir, intensityThr, intensitySdThr)
     results = rbind(results, line)
-  }
 }
+print("Done!")
 
 # making a copy of results
 df = results
@@ -232,12 +252,13 @@ results = data.frame(plateID = sub("^.*/(.*)\\..*$", "\\1", as.character(results
                      mutcounts = as.numeric(results[,2]),
                      row.names=NULL)
 
-write.table(results, "generalAndMutCounts.txt",
+write.table(results, paste0(resultsDir, "/", "generalAndMutCounts.txt"),
             row.names = F, col.names = T, quote = F, sep="\t")
 
-# analyzing the data and creating charts
+# Creating classification chart
+print("Plotting classification chart")
 theme_set(theme_bw())
-svg("colony_redIntensity_scatter.svg", height = 4, width = 5)
+svg(paste0(resultsDir, "/", "colony_redIntensity_scatter.svg"), height = 4, width = 5)
 ggplot(featureTable, aes(x=b.mean, y=b.sd, colour=class)) +
   scale_colour_manual(values = c("Mutant" = "red", "Normal" = "green"),
                       guide = guide_legend(title = "Class")) +
@@ -247,3 +268,5 @@ ggplot(featureTable, aes(x=b.mean, y=b.sd, colour=class)) +
   xlab("Colony Mean Red Intensity") +
   ylab("Colony Standard Deviation of Red Intensity")
 dev.off()
+print("Done!")
+
