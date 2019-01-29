@@ -10,7 +10,7 @@ The software will also write in the user defined resultsDir three additional fil
 
 * __features.txt__: A tab-separated table with all the segmented colonies of each image (each spot named colony_#), alongside with each of the features computed by EBImage::computeFeatures.shape, EBImage::computeFeatures.basic and EBImage::computeFeatures.moment.
 * __generalAndMutCounts.txt__: A tab-separated table with the amount of valid colonies and mutant colonies, where the number of valid colonies is the sum of normal colonies and mutant colonies.
-* __colony_redIntensity_scatter.svg__: This chart shows a scatter plot of two variables computed for each valid colony of an entire experiment. x-axis shows the mean red intensity and y-axis shows the standard deviation of red intensity. The decision boundary is given by an oversimplified approach based on percentiles, were mutants are the 1% having the higher mean red intensity and the 1% having the lower standard deviation of red intensity.
+* __colony_redIntensity_scatter.svg__: This chart shows a scatter plot of two variables computed for each valid colony of an entire experiment. x-axis shows the mean red intensity and y-axis shows the standard deviation of red intensity. The decision boundary is given by an oversimplified approach based on percentiles, where mutants are the 1% having the higher mean red intensity and the 1% having the lower standard deviation of red intensity.
 
 <p align="center">
 <img src="/examples/colony_redIntensity_scatter.png">
