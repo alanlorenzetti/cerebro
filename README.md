@@ -57,6 +57,6 @@ Rscript cerebro.R images processedImages results 100 0.8 0.5
 <img align="center" src="/examples/raw/.raw_image.png">
 </p>
 
-## Software Name
+## About Software Name
 
-Yes, Charles Xavier's machine indeed.  
+Charles Xavier (X-Men) finds mutants to recruit using a machine called Cerebro.  
