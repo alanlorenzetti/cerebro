@@ -12,7 +12,8 @@ library(pacman)
 
 # required packages
 packs = c("tidyverse",
-          "ggpubr")
+          "ggpubr",
+          "ggtext")
 
 # loading
 p_load(char = packs)
@@ -49,6 +50,20 @@ decisionplot = featureTable %>%
   xlab("Intensidade Média da Cor Vermelha") +
   ylab("Desvio Padrão da Intensidade da Cor Vermelha")
 
+# saving decision boundaries plot
+decisionploten = decisionplot +
+  xlab("Colony Mean Red Intensity") +
+  ylab("Colony Standard Deviation of Red Intensity") + 
+  scale_colour_manual(values = c("Mutant" = "#E15759", "Normal" = "#59A14F"),
+                      labels = c("Mutant" = "Mutant", "Normal" = "Normal"),
+                      guide = guide_legend(title = "Class"))
+
+ggsave(filename = "colony_redIntensity_scatter.png",
+       plot = decisionploten,
+       width = 4,
+       height = 3.5,
+       units = "in")
+
 # getting general knowledge about frequencies
 general = featureTable %>% 
   mutate(plateID = str_replace(plate, "^.*/(.*).tif$", "\\1")) %>% 
@@ -59,16 +74,33 @@ general = featureTable %>%
             mutcounts = sum(class == "Mutant")) %>% 
   ungroup() %>% 
   mutate(strain = str_replace(plateID, "^(.*)_.*_.*$", "\\1"),
-         replicate = str_replace(plateID, "^.*_(.*_.*)$", "\\1")) %>% 
+         replicate = str_replace(plateID, "^.*_(.*)_.*$", "\\1"),
+         experiment = str_replace(plateID, "^.*_.*_(.*)$", "\\1")) %>% 
   group_by(strain) %>% 
   summarise(nPlates = length(strain),
             counts = sum(counts),
             mutcounts = sum(mutcounts),
             frequency = sum(mutcounts)/sum(counts)) %>% 
-  mutate(strain = case_when(strain == "dLSm" ~ "dUra3dLSm",
-                            strain == "dUra3" ~ "dUra3",
+  mutate(strain = case_when(strain == "dLSm" ~ "&Delta;*ura3* &Delta;*smap1*",
+                            strain == "dUra3" ~ "&Delta;*ura3*",
                             strain == "NRC1" ~ "NRC-1",
                             TRUE ~ as.character(strain)))
+
+# saving an intermediate version of
+# results df
+# featureTable %>% 
+#   mutate(plateID = str_replace(plate, "^.*/(.*).tif$", "\\1")) %>% 
+#   dplyr::select(plateID,
+#                 class) %>% 
+#   group_by(plateID) %>% 
+#   summarise(counts = n(),
+#             mutcounts = sum(class == "Mutant")) %>% 
+#   ungroup() %>% 
+#   mutate(strain = str_replace(plateID, "^(.*)_.*_.*$", "\\1"),
+#          replicate = str_replace(plateID, "^.*_(.*)_.*$", "\\1"),
+#          experiment = str_replace(plateID, "^.*_.*_(.*)$", "\\1")) %>% 
+#   write_tsv(x = .,
+#             file = "countsPerPlate.tsv")
 
 # plotting general insights
 generalplot = general %>%
@@ -76,9 +108,10 @@ generalplot = general %>%
              label=paste0("p: ", nPlates, "\nc: ", counts))) +
   geom_bar(stat = "identity", fill="white", colour="black") +
   geom_text(vjust=-0.3, size=4) +
-  scale_x_discrete(limits = c("NRC-1", "dUra3", "dUra3dLSm")) +
+  scale_x_discrete(limits = c("NRC-1", "&Delta;*ura3*", "&Delta;*ura3* &Delta;*smap1*")) +
   scale_y_continuous(limits = c(0, 0.025)) +
-  labs(x = "Linhagem", y = "Frequência de Mutantes Translúcidos")
+  labs(x = "Linhagem", y = "Frequência de Mutantes Translúcidos") +
+  theme(axis.text.x = element_markdown())
 
 # arranging plots
 arranged = ggarrange(plotlist = list(decisionplot, generalplot),
@@ -90,7 +123,8 @@ ggsave(filename = "panelEspontaneousMutants.png",
        plot = arranged,
        width = 8,
        height = 5,
-       units = "in")
+       units = "in",
+       dpi = 300)
 
 # performing Fisher Exact test ####
 # to test if strains have different frequencies
